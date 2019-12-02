@@ -17,14 +17,14 @@ void ADC_setup() {
 
 const byte pins[] = {A0, A1, A2, A3};
 const byte size = sizeof(pins);
-volatile int analogValues[8];
+volatile unsigned short analogValues[size];
 
-int analogReadInterrupt(byte pin) {
+unsigned short analogReadInterrupt(byte pin) {
     return analogValues[pin - A0];
 }
 
-int readCounter = 0;
-int pinIndex = 0;
+byte readCounter = 0;
+byte pinIndex = 0;
 
 /*** Interrupt routine ADC ready ***/
 ISR(ADC_vect) {
