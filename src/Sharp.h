@@ -14,10 +14,15 @@ public:
 //        pinMode(pin, INPUT);
     }
 
-protected:
+    unsigned short getAnalogRead() final {
+        return analogRead(pin);
+    }
+
     float getVoltage() {
         return filter(analogRead(pin)) * VOLTAGE_TO_ADC_FACTOR;
     }
+
+protected:
 
     byte get128value() const {
         return (byte) (analogRead(pin) >> 3);
@@ -69,13 +74,17 @@ public:
 };
 
 
-const byte sharp20_150_table128[] = {
-        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 192, 170, 152, 137, 124, 113, 103, 95, 88, 81, 76, 71, 66, 62, 59, 55, 52,
-        50, 47, 45, 43, 41, 39, 37, 36, 34, 33, 31, 30, 29, 28, 27, 26, 25, 24, 24, 23, 22, 22, 21, 20, 20, 19, 19, 18,
-        18, 17, 17, 16, 16, 15, 15, 15, 14, 14, 14, 13, 13, 13, 13, 12, 12, 12, 12, 11, 11, 11, 11, 10, 10, 10, 10, 10,
-        10, 9, 9, 9, 9, 9, 9, 8, 8, 8, 8, 8, 8, 8, 8, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-        5, 5, 5, 5, 5, 5, 5
+const byte sharp10_150_distances[] = {7, 10, 15, 22, 32, 47, 70, 104, 130};
+static const int SENSORS_COUNT = 5;
+static const int READING_COUNT = 9;
+unsigned short sharp10_150[SENSORS_COUNT][READING_COUNT] = {
+        {860, 760, 540, 395, 295, 219, 155, 118, 90},
+        {840, 750, 530, 392, 295, 233, 185, 153, 137},
+        {867, 769, 550, 400, 300, 230, 172, 145, 120},
+        {870, 780, 526, 370, 265, 195, 157, 125, 103},
+        {818, 758, 565, 420, 327, 263, 215, 195, 160}
 };
+
 
 class Sharp10_150 : public SharpBase {
 
@@ -83,24 +92,51 @@ public:
     static const int MIN_DISTANCE = 6;
     static const int MAX_DISTANCE = 150;
 
-    Sharp10_150(byte pin) : SharpBase(pin) {}
+    explicit Sharp10_150(byte pin) : SharpBase(pin) {}
 
 
-    unsigned short getDistance() override final {
+    unsigned short getDistance() final {
         float v = getVoltage();
-//        Serial.println(v);
-//        if (v < 0.46 || v > 2.8) {
-//            return MAX_DISTANCE;
-//        }
 //        unsigned short dist = (unsigned short) (57.0284 * pow(v, -1.4522)); // калибровка
-        unsigned short dist = (unsigned short) (60.101 * pow(v, -1.535)); // по графику
+        auto dist = (unsigned short) (60.101 * pow(v, -1.535)); // по графику
         return constrain(dist, MIN_DISTANCE, MAX_DISTANCE);
     }
 
+};
 
-//    virtual unsigned short getDistance() {
-//        return sharp20_150_table128[get128value()];
-//    }
+
+class Sharp10_150Table : public SharpBase {
+
+public:
+    static const int MIN_DISTANCE = 6;
+    static const int MAX_DISTANCE = 150;
+
+    explicit Sharp10_150Table(byte pin) : SharpBase(pin), sensorIndex(pin - A0) {}
+
+    unsigned short getDistance() override {
+        unsigned short aRead = getAnalogRead();
+
+        auto sensorsReadings = sharp10_150[sensorIndex];
+
+        if (aRead > sensorsReadings[0]) {
+            return MIN_DISTANCE;
+        }
+        if (aRead < sensorsReadings[READING_COUNT - 1]) {
+            return MIN_DISTANCE;
+        }
+
+        byte i = 1;
+        while (sensorsReadings[i] > aRead) {
+            i++;
+        }
+        byte min = sharp10_150_distances[i - 1];
+        byte max = sharp10_150_distances[i];
+
+        return map(aRead, sensorsReadings[i - 1], sensorsReadings[i], min, max);
+    }
+
+private:
+    const byte sensorIndex;
 };
 
 
