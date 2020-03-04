@@ -1,5 +1,4 @@
-#ifndef SHARP_H
-#define SHARP_H
+#pragma once
 
 #include "DistanceSensor.h"
 #include "ADC.h"
@@ -175,5 +174,3 @@ public:
 //        return constrain(dist, MIN_DISTANCE, MAX_DISTANCE);
     }
 };
-
-#endif

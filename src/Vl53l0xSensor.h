@@ -1,5 +1,4 @@
-#ifndef ROBORACESENSORS_VL53L0X_SENSOR_H
-#define ROBORACESENSORS_VL53L0X_SENSOR_H
+#pragma once
 
 #include <VL53L0X.h>
 #include "DistanceSensor.h"
@@ -64,5 +63,3 @@ public:
 };
 
 byte Vl53l0xSensor::nextAddress = 0x30;
-
-#endif

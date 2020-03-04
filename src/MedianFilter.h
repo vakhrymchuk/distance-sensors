@@ -1,5 +1,4 @@
-#ifndef MEDIAN_FILTER_H
-#define MEDIAN_FILTER_H
+#pragma once
 
 #include "DistanceSensor.h"
 
@@ -65,5 +64,3 @@ void MedianFilter::sortValues() {
         }
     }
 }
-
-#endif

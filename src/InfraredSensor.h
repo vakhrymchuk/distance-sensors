@@ -1,5 +1,4 @@
-#ifndef INFRARED_SENSOR_H
-#define INFRARED_SENSOR_H
+#pragma once
 
 class InfraredSensor {
 public:
@@ -15,5 +14,3 @@ private:
     const byte _pin;
 
 };
-
-#endif

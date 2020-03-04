@@ -1,5 +1,4 @@
-#ifndef SENSORS_ADC_H
-#define SENSORS_ADC_H
+#pragma once
 
 //#define FREE_RUN_MODE true
 
@@ -41,5 +40,3 @@ ISR(ADC_vect) {
 
 #endif
 
-
-#endif

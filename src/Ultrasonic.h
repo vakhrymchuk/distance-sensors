@@ -1,5 +1,4 @@
-#ifndef ULTRASONIC_H
-#define ULTRASONIC_H
+#pragma once
 
 #include <Arduino.h>
 #include "DistanceSensor.h"
@@ -53,5 +52,3 @@ private:
     }
 
 };
-
-#endif

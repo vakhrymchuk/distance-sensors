@@ -1,5 +1,4 @@
-#ifndef TIMING_FILTER_H
-#define TIMING_FILTER_H
+#pragma once
 
 #include "DistanceSensor.h"
 #include "Stopwatch.h"
@@ -38,5 +37,3 @@ private:
 
 
 };
-
-#endif

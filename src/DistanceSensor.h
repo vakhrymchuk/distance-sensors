@@ -1,5 +1,4 @@
-#ifndef DISTANCE_SENSOR_H
-#define DISTANCE_SENSOR_H
+#pragma once
 
 class DistanceSensor {
 public:
@@ -16,5 +15,3 @@ public:
 
     unsigned short value = 0;
 };
-
-#endif

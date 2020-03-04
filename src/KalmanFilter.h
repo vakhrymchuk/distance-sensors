@@ -1,5 +1,4 @@
-#ifndef KALMAN_FILTER_H
-#define KALMAN_FILTER_H
+#pragma once
 
 #include "DistanceSensor.h"
 //#include "ValueBase.h"
@@ -13,7 +12,7 @@ public:
         prevValue = sensor->getDistance();
     }
 
-    virtual unsigned short getDistance() override {
+    unsigned short getDistance() override {
         return prevValue = (unsigned short) (sensor->getDistance() * KALMAN_FACTOR +
                                              (1 - KALMAN_FACTOR) * prevValue);
     }
@@ -22,5 +21,3 @@ private:
     DistanceSensor *sensor;
     unsigned short prevValue = 0;
 };
-
-#endif
