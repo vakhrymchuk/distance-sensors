@@ -27,12 +27,11 @@ public:
     void initSensor() {
         digitalWrite(sensorPin, HIGH);
 
+        sensor.setTimeout(100);
         sensor.init();
-
-        sensor.setTimeout(500);
-        sensor.setDistanceMode(VL53L1X::Long);
-        sensor.setMeasurementTimingBudget(50000);
-        sensor.startContinuous(50);
+        sensor.setDistanceMode(VL53L1X::Short);
+        sensor.setMeasurementTimingBudget(20000);
+        sensor.startContinuous(20);
 
 #ifdef DEBUG
         Serial.print(F("Use address: "));

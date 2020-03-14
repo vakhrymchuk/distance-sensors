@@ -2,6 +2,7 @@
 #include <Interval.h>
 #include <Wire.h>
 #include "Vl53l0xSensor.h"
+#include "Vl53l1xSensor.h"
 
 DistanceSensor *sensor1;
 DistanceSensor *sensor2;
@@ -39,13 +40,10 @@ void setupVl53() {
     checkWire(Wire);
 
     Vl53l0xSensor::lowPin(5);
-    Vl53l0xSensor::lowPin(6);
+    Vl53l1xSensor::lowPin(6);
 
-    Vl53l0xSensor *sensor11 = new Vl53l0xSensor(5);
-    sensor1 = sensor11;
-    Vl53l0xSensor *sensor22 = new Vl53l0xSensor(6);
-    sensor2 = sensor22;
-
+    sensor1 = new Vl53l0xSensor(5);
+    sensor2 = new Vl53l1xSensor(6);
 }
 
 void setup() {

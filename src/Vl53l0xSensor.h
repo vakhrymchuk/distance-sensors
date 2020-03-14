@@ -27,13 +27,10 @@ public:
     void initSensor() {
         digitalWrite(sensorPin, HIGH);
 
+        sensor.setTimeout(100);
         sensor.init();
-
-        sensor.setTimeout(500);
-
-        // Start continuous back-to-back mode (take readings as fast as possible). To use continuous timed mode
-        // instead, provide a desired inter-measurement period in ms (e.g. sensor.startContinuous(100)).
-        sensor.startContinuous();
+        sensor.setMeasurementTimingBudget(20000);
+        sensor.startContinuous(20);
 
 #ifdef DEBUG
         Serial.print(F("Use address: "));
