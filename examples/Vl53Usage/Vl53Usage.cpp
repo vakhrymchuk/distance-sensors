@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include <Interval.h>
 #include <Wire.h>
-#include "Vl53l0xSensor.h"
-#include "Vl53l1xSensor.h"
+#include "Vl53l0xSensorPin.h"
+#include "Vl53l1xSensorPin.h"
 
 DistanceSensor *sensor1;
 DistanceSensor *sensor2;
@@ -39,11 +39,12 @@ byte checkWire(TwoWire wire) {
 void setupVl53() {
     checkWire(Wire);
 
-    Vl53l0xSensor::lowPin(5);
-    Vl53l1xSensor::lowPin(6);
+    sensor1 = new Vl53l0xSensorPin(5);
+    sensor2 = new Vl53l1xSensorPin(6);
 
-    sensor1 = new Vl53l0xSensor(5);
-    sensor2 = new Vl53l1xSensor(6);
+    ((Vl53l0xSensorPin*) sensor1)->initSensor();
+    ((Vl53l1xSensorPin*) sensor2)->initSensor();
+
 }
 
 void setup() {
