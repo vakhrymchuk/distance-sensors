@@ -1,8 +1,12 @@
 #include <Arduino.h>
 #include <Interval.h>
 #include <Wire.h>
-#include "Vl53l0xSensorPin.h"
-#include "Vl53l1xSensorPin.h"
+#include <TCA9548A.h>
+#include "Vl53l0xSensorI2cMux.h"
+#include "Vl53l1xSensorI2cMux.h"
+
+
+TCA9548A i2cMux;
 
 DistanceSensor *sensor1;
 DistanceSensor *sensor2;
@@ -39,11 +43,11 @@ byte checkWire(TwoWire wire) {
 void setupVl53() {
     checkWire(Wire);
 
-    sensor1 = new Vl53l0xSensorPin(5);
-    sensor2 = new Vl53l1xSensorPin(6);
+    sensor1 = new Vl53l0xSensorI2cMux(0, &i2cMux);
+    sensor2 = new Vl53l1xSensorI2cMux(1, &i2cMux);
 
-    ((Vl53l0xSensorPin*) sensor1)->initSensor();
-    ((Vl53l1xSensorPin*) sensor2)->initSensor();
+    ((Vl53l0xSensorI2cMux *) sensor1)->initSensor();
+    ((Vl53l1xSensorI2cMux *) sensor2)->initSensor();
 
 }
 
@@ -53,6 +57,9 @@ void setup() {
 
     Wire.begin();
     Wire.setClock(400000);
+
+    i2cMux.begin(Wire);
+    i2cMux.closeAll();
 
     setupVl53();
 

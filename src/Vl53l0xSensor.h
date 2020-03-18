@@ -29,7 +29,7 @@ private:
     void readNewValue() {
         unsigned short newValue = sensor.readRangeContinuousMillimeters();
 #ifdef DEBUG
-        if (sensor.timeoutOccurred()) Serial.print(F(" TIMEOUT"));
+        if (sensor.timeoutOccurred()) Serial.println(F("VL53L0X TIMEOUT"));
 #endif
         newValue /= 10;
         newValue = constrain(newValue, 0, MAX_DISTANCE);
