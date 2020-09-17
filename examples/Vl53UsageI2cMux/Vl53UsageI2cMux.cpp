@@ -46,8 +46,8 @@ void setupVl53() {
     sensor1 = new Vl53l0xSensorI2cMux(0, &i2cMux);
     sensor2 = new Vl53l1xSensorI2cMux(1, &i2cMux);
 
-    ((Vl53l0xSensorI2cMux *) sensor1)->initSensor();
-    ((Vl53l1xSensorI2cMux *) sensor2)->initSensor();
+    ((Vl53l0xSensor *) sensor1)->initSensor();
+    ((Vl53l1xSensor *) sensor2)->initSensor();
 
 }
 
@@ -60,6 +60,7 @@ void setup() {
 
     i2cMux.begin(Wire);
     i2cMux.closeAll();
+    checkWire(Wire);
 
     setupVl53();
 

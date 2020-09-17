@@ -5,21 +5,24 @@
 
 class Vl53l1xSensor : public DistanceSensorValue {
 public:
-    static const unsigned short MAX_DISTANCE = 400;
+    unsigned short maxDistance = 400;
 
 protected:
 
     VL53L1X sensor = VL53L1X();
 
-
 public:
 
     virtual void initSensor() {
         sensor.setTimeout(100);
-        sensor.init();
-        sensor.setDistanceMode(VL53L1X::Short);
-        sensor.setMeasurementTimingBudget(20000);
-        sensor.startContinuous(20);
+        while (!sensor.init()) {
+            Serial.println(F("Failed to detect and initialize sensor VL53L1X!"));
+            delay(100);
+        }
+        sensor.setDistanceMode(VL53L1X::Medium);
+        sensor.setMeasurementTimingBudget(33000);
+        sensor.startContinuous(33);
+        maxDistance = 320;
     }
 
     unsigned short getDistance() override {
@@ -29,12 +32,12 @@ public:
 
 private:
     void readNewValue() {
-        unsigned short newValue = sensor.readRangeContinuousMillimeters();
+        unsigned short newValue = sensor.read(false);
 #ifdef DEBUG
-        if (sensor.timeoutOccurred()) Serial.println(F("VL53L1X TIMEOUT"));
+        if (sensor.timeoutOccurred()) Serial.print('!');
 #endif
         newValue /= 10;
-        newValue = constrain(newValue, 0, MAX_DISTANCE);
+        newValue = constrain(newValue, 0, maxDistance);
         if (newValue > 0) value = newValue;
     }
 

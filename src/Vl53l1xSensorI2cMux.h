@@ -2,6 +2,10 @@
 
 #include "Vl53l1xSensor.h"
 
+/**
+ * Create all sensors, close all channels.
+ * After that invoke initSensor method for each sensor.
+ */
 class Vl53l1xSensorI2cMux : public Vl53l1xSensor {
 private:
 
