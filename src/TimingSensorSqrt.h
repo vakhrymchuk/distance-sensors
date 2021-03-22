@@ -4,10 +4,10 @@
 #include "Stopwatch.h"
 
 // http://umath.ru/calc/graph/?&point=-247;61&scale=5;2&func=round(x%5E0.5);
-class TimingFilter : public DistanceSensor {
+class TimingSensorSqrt : public DistanceSensor {
 public:
 
-    TimingFilter(DistanceSensor *sensor) : sensor(sensor) {}
+    TimingSensorSqrt(DistanceSensor *sensor) : sensor(sensor) {}
 
     unsigned short getDistance() override final {
         unsigned short distance = sensor->getDistance();

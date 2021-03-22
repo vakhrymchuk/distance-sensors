@@ -21,6 +21,11 @@ public:
     }
 
     void initSensor() override {
+#ifdef DEBUG
+        Serial.print(F("Init sensor on pin: "));
+        Serial.println(sensorPin);
+#endif
+
         digitalWrite(sensorPin, HIGH);
         Vl53l0xSensor::initSensor();
 

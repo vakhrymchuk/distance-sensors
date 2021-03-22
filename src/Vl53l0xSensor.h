@@ -15,10 +15,12 @@ public:
 
     virtual void initSensor() {
         sensor.setTimeout(100);
-        while (!sensor.init())
-        {
+        if (!sensor.init()) {
+#ifdef DEBUG
             Serial.println(F("Failed to detect and initialize sensor VL53L0X!"));
             delay(100);
+#endif
+            return;
         }
         sensor.setMeasurementTimingBudget(20000);
         sensor.startContinuous(20);
@@ -33,9 +35,13 @@ public:
 private:
     void readNewValue() {
         unsigned short newValue = sensor.readRangeContinuousMillimeters();
+        if (sensor.timeoutOccurred()) {
 #ifdef DEBUG
-        if (sensor.timeoutOccurred()) Serial.print('!');
+            Serial.print('!');
 #endif
+//            initSensor();
+        }
+
         newValue /= 10;
         newValue = constrain(newValue, 0, maxDistance);
         if (newValue > 0) value = newValue;

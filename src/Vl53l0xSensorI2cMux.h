@@ -18,6 +18,10 @@ public:
     }
 
     void initSensor() override {
+#ifdef DEBUG
+        Serial.print("Init sensor on channel ");
+        Serial.println(channel);
+#endif
         i2cMux->openChannel(channel);
         Vl53l0xSensor::initSensor();
         i2cMux->closeChannel(channel);
