@@ -15,7 +15,7 @@ private:
     const byte sensorPin;
 
 public:
-    explicit Vl53l0xSensorPin(const byte sensorPin) :
+    explicit Vl53l0xSensorPin(const byte sensorPin, VL53Mode mode = NORMAL) : Vl53l0xSensor(mode),
             sensorPin(sensorPin) {
         lowPin();
     }

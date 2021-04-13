@@ -13,7 +13,7 @@ private:
     TCA9548A *i2cMux;
 
 public:
-    explicit Vl53l0xSensorI2cMux(const byte channel, TCA9548A *i2cMux) :
+    explicit Vl53l0xSensorI2cMux(const byte channel, TCA9548A *i2cMux, VL53Mode mode = NORMAL) : Vl53l0xSensor(mode)
             channel(channel), i2cMux(i2cMux) {
     }
 
