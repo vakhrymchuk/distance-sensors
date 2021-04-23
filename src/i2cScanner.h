@@ -2,7 +2,7 @@
 
 #include <Wire.h>
 
-byte checkWire(TwoWire wire) {
+byte checkWire(TwoWire &wire) {
     byte working = 0;
     byte count = 0;
     wire.begin();
