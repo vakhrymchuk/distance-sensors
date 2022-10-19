@@ -14,12 +14,17 @@ void ADC_setup() {
     sei();              // set interrupt flag
 }
 
-const byte pins[] = {A0, A1, A2, A3};
+const byte pins[] = {A0, A1, A2, A6, A7};
 const byte size = sizeof(pins);
 volatile unsigned short analogValues[size];
 
-unsigned short analogReadInterrupt(byte pin) {
-    return analogValues[pin - A0];
+int analogReadInterrupt(byte pin) {
+    for (int i = 0; i < size; ++i) {
+        if (pins[i] == pin) {
+            return analogValues[i];
+        }
+    }
+    return 0;
 }
 
 byte readCounter = 0;
@@ -30,7 +35,7 @@ ISR(ADC_vect) {
     readCounter++;
     if (readCounter == 3) {
         readCounter = 0;
-        analogValues[pins[pinIndex] - A0] = ADCW;
+        analogValues[pinIndex] = ADCW;
         pinIndex = (pinIndex + 1) % size;
         ADMUX = 0x40 | (pins[pinIndex] - A0);
     }
