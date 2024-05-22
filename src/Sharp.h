@@ -72,17 +72,8 @@ public:
     }
 };
 
-
-const byte sharp10_150_distances[] = {7, 10, 15, 22, 32, 47, 70, 104, 130};
-static const int SENSORS_COUNT = 5;
 static const int READING_COUNT = 9;
-unsigned short sharp10_150[SENSORS_COUNT][READING_COUNT] = {
-        {860, 760, 540, 395, 295, 219, 155, 118, 90},
-        {840, 750, 530, 392, 295, 233, 185, 153, 137},
-        {867, 769, 550, 400, 300, 230, 172, 145, 120},
-        {870, 780, 526, 370, 265, 195, 157, 125, 103},
-        {818, 758, 565, 420, 327, 263, 215, 195, 160}
-};
+const uint8_t sharp10_150_distances[READING_COUNT] = {10, 20, 30, 50, 75, 100, 125, 150, 160};
 
 
 class Sharp10_150 : public SharpBase {
@@ -107,35 +98,71 @@ public:
 class Sharp10_150Table : public SharpBase {
 
 public:
-    static const int MIN_DISTANCE = 6;
+    static const int MIN_DISTANCE = 10;
     static const int MAX_DISTANCE = 150;
 
-    explicit Sharp10_150Table(byte pin) : SharpBase(pin), sensorIndex(pin - A0) {}
+    explicit Sharp10_150Table(byte pin, const uint16_t *readings1)
+            : SharpBase(pin), readings(readings1) {}
 
     unsigned short getDistance() override {
         unsigned short aRead = getAnalogRead();
 
-        auto sensorsReadings = sharp10_150[sensorIndex];
-
-        if (aRead > sensorsReadings[0]) {
+        if (aRead > readings[0]) {
             return MIN_DISTANCE;
         }
-        if (aRead < sensorsReadings[READING_COUNT - 1]) {
-            return MIN_DISTANCE;
+        if (aRead < readings[READING_COUNT - 1]) {
+            return MAX_DISTANCE;
         }
 
         byte i = 1;
-        while (sensorsReadings[i] > aRead) {
+        while (readings[i] > aRead) {
             i++;
         }
         byte min = sharp10_150_distances[i - 1];
         byte max = sharp10_150_distances[i];
 
-        return map(aRead, sensorsReadings[i - 1], sensorsReadings[i], min, max);
+        return map(aRead, readings[i - 1], readings[i], min, max);
     }
 
 private:
-    const byte sensorIndex;
+    const uint16_t *readings;
+};
+
+
+
+
+const uint16_t sharp100_550_distances[READING_COUNT] = {60, 80, 100, 200, 300, 400, 500, 550, 600};
+class Sharp100_500Table : public SharpBase {
+
+public:
+    static const int MIN_DISTANCE = 50;
+    static const int MAX_DISTANCE = 550;
+
+    explicit Sharp100_500Table(byte pin, const uint16_t *readings1)
+            : SharpBase(pin), readings(readings1) {}
+
+    unsigned short getDistance() override {
+        unsigned short aRead = getAnalogRead();
+
+        if (aRead > readings[0]) {
+            return MIN_DISTANCE;
+        }
+        if (aRead < readings[READING_COUNT - 1]) {
+            return MAX_DISTANCE;
+        }
+
+        byte i = 1;
+        while (readings[i] > aRead) {
+            i++;
+        }
+        unsigned short min = sharp100_550_distances[i - 1];
+        unsigned short max = sharp100_550_distances[i];
+
+        return map(aRead, readings[i - 1], readings[i], min, max);
+    }
+
+private:
+    const uint16_t *readings;
 };
 
 
