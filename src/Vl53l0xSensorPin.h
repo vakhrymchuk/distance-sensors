@@ -13,10 +13,11 @@ public:
 private:
 
     const byte sensorPin;
+    const byte sensorAddress;
 
 public:
     explicit Vl53l0xSensorPin(const byte sensorPin, VL53Mode mode = NORMAL) : Vl53l0xSensor(mode),
-            sensorPin(sensorPin) {
+            sensorPin(sensorPin), sensorAddress(nextAddress++) {
         lowPin();
     }
 
@@ -31,9 +32,9 @@ public:
 
 #ifdef DEBUG
         Serial.print(F("Use address: "));
-        Serial.println(nextAddress);
+        Serial.println(sensorAddress);
 #endif
-        sensor.setAddress(nextAddress++);
+        sensor.setAddress(sensorAddress);
     }
 
 private:

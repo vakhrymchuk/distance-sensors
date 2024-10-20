@@ -20,6 +20,16 @@ public:
         return getMedianValue();
     }
 
+    DistanceSensor *getSensor() const
+    {
+        return sensor;
+    }
+
+    void initSensor() override
+    {
+        sensor->initSensor();
+    }
+
 private:
 
     DistanceSensor *sensor;

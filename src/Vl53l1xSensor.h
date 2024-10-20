@@ -13,9 +13,9 @@ protected:
 
 public:
 
-    virtual void initSensor() {
+    virtual void initSensor() override {
         sensor.setTimeout(100);
-        while (!sensor.init()) {
+        if (!sensor.init()) {
             Serial.println(F("Failed to detect and initialize sensor VL53L1X!"));
             delay(100);
         }

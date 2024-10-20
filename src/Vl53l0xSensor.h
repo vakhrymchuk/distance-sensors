@@ -23,7 +23,7 @@ public:
         initSensor();
     }
 
-    virtual void initSensor() {
+    virtual void initSensor() override {
         sensor.setTimeout(100);
         if (!sensor.init()) {
 #ifdef DEBUG

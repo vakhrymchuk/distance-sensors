@@ -18,8 +18,8 @@ void setupVl53() {
     sensor1 = new Vl53l0xSensorPin(5);
     sensor2 = new Vl53l1xSensorPin(6);
 
-    ((Vl53l0xSensorPin*) sensor1)->initSensor();
-    ((Vl53l1xSensorPin*) sensor2)->initSensor();
+    sensor1->initSensor();
+    sensor2->initSensor();
 
 }
 

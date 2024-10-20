@@ -38,6 +38,10 @@ public:
         return sensor;
     }
 
+    void initSensor() override {
+        sensor->initSensor();
+    }
+
 protected:
 
 
