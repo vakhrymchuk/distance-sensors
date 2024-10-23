@@ -36,6 +36,7 @@ public:
         switch (mode) {
             case NORMAL:
                 sensor.startContinuous();
+                maxDistance = 120;
                 break;
             case LONG_RANGE:
                 // lower the return signal rate limit (default is 0.25 MCPS)
@@ -44,6 +45,7 @@ public:
                 sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 18);
                 sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 14);
                 sensor.startContinuous();
+                maxDistance = 200;
                 break;
             case HIGH_SPEED:
                 // reduce timing budget to 20 ms (default is about 33 ms)
@@ -55,6 +57,7 @@ public:
                 // increase timing budget to 200 ms
                 sensor.setMeasurementTimingBudget(200000);
                 sensor.startContinuous();
+                maxDistance = 200;
                 break;
         }
 
